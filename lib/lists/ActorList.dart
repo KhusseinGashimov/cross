@@ -1,8 +1,9 @@
-import 'package:cross/pages/News.dart';
-import 'package:cross/pages/NewsDetailPage.dart';
+
+import 'package:cross/classes/Actor.dart';
+import 'package:cross/detailPages/ActorsDetailsPage.dart';
 import 'package:flutter/material.dart';
 
-class NewsListPage extends StatelessWidget {
+class ActorsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,29 +12,29 @@ class NewsListPage extends StatelessWidget {
           color: Colors.white,
         ),
         title: const Text(
-          "Список Новостей",
+          "Список актеров",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.purple[900],
       ),
       body: ListView.builder(
-        itemCount: newss.length,
+        itemCount: actors.length,
         itemBuilder: (context, index) {
           return Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
             child: ListTile(
               leading: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: Image.network(newss[index].url)),
+                  child: Image.network(actors[index].Url)),
               title: Text(
-                newss[index].clickbait,
+                actors[index].name,
                 style: const TextStyle(color: Colors.white),
               ),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => NewsDetailPage(newss[index]),
+                    builder: (context) => ActorDetailsPage(actors[index]),
                   ),
                 );
               },

@@ -1,4 +1,4 @@
-import 'package:cross/pages/Actor.dart';
+import 'package:cross/classes/Actor.dart';
 import 'package:flutter/material.dart';
 
 class ActorDetailsPage extends StatelessWidget {

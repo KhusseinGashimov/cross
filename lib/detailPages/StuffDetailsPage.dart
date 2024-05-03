@@ -1,4 +1,4 @@
-import 'package:cross/pages/Stuff.dart';
+import 'package:cross/classes/Stuff.dart';
 import 'package:flutter/material.dart';
 
 class StuffDetailsPage extends StatelessWidget {

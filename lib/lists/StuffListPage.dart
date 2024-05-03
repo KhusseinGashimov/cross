@@ -1,8 +1,10 @@
-import 'package:cross/pages/Stuff.dart';
-import 'package:cross/pages/StuffDetailsPage.dart';
+import 'package:cross/classes/Stuff.dart';
+import 'package:cross/detailPages/StuffDetailsPage.dart';
 import 'package:flutter/material.dart';
 
 class StuffListPage extends StatelessWidget {
+  const StuffListPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

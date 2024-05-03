@@ -1,4 +1,4 @@
-import 'package:cross/pages/News.dart';
+import 'package:cross/classes/News.dart';
 import 'package:flutter/material.dart';
 
 class NewsDetailPage extends StatelessWidget {

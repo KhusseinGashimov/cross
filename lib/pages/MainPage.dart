@@ -1,14 +1,14 @@
-import 'package:cross/pages/ActorList.dart';
-import 'package:cross/pages/News.dart';
-import 'package:cross/pages/NewsDetailPage.dart';
+import 'package:cross/lists/ActorList.dart';
+import 'package:cross/classes/Comment.dart';
+import 'package:cross/lists/CommentList.dart';
+import 'package:cross/classes/News.dart';
+import 'package:cross/detailPages/NewsDetailPage.dart';
 
-import 'package:cross/pages/NewsList.dart';
+import 'package:cross/lists/NewsList.dart';
 
-import 'package:cross/pages/StuffListPage.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cross/lists/StuffListPage.dart';
+import 'package:cross/pages/BookingCalendar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,7 +19,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final videoURL = "https://www.youtube.com/watch?v=YMx8Bbev6T4";
+  final videoURL =
+      "https://www.youtube.com/watch?v=5PSNL1qE6VY&t=142s&pp=ygUOYXZhdGFyIHRyYWlsZXI%3D";
 
   late YoutubePlayerController _controller;
   @override
@@ -28,15 +29,29 @@ class _MainPageState extends State<MainPage> {
 
     _controller = YoutubePlayerController(
         initialVideoId: videoID!,
-        flags: const YoutubePlayerFlags(autoPlay: false));
+        flags: const YoutubePlayerFlags(autoPlay: false, enableCaption: false));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Center(
+                child: IconButton(
+              icon: const Icon(Icons.calendar_month),
+              color: Colors.white,
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (contex)=>BookingCalendar()));
+              }
+            )),
+          )
+        ],
+      ),
       backgroundColor: Colors.purple[900],
-      appBar: AppBar(),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -104,7 +119,7 @@ class _MainPageState extends State<MainPage> {
           ),
           const Text(
             "DESCRIPTION",
-            style: const TextStyle(
+            style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const SizedBox(
@@ -287,18 +302,54 @@ class _MainPageState extends State<MainPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => StuffListPage()));
+                            builder: (context) => const StuffListPage()));
                   },
                   child: const Text('Stuff',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                       ))),
-              const Row(),
             ],
           ),
-
-          
+          const SizedBox(
+            height: 20,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Comments",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
+              Container(
+                color: Colors.purple[700],
+                child: ListTile(
+                  title: Text(comments[0].name),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(comments[0].description),
+                  ),
+                  subtitleTextStyle: const TextStyle(color: Colors.white),
+                  titleTextStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CommentList()));
+                  },
+                  child: const Text(
+                    "View all",
+                    style: TextStyle(color: Colors.white),
+                  ))
+            ],
+          )
         ],
       ),
     );

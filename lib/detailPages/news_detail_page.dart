@@ -1,10 +1,10 @@
-import 'package:cross/classes/News.dart';
+import 'package:cross/classes/news.dart';
 import 'package:flutter/material.dart';
 
 class NewsDetailPage extends StatelessWidget {
   final News news;
 
-  NewsDetailPage(this.news);
+  const NewsDetailPage(this.news, {super.key});
 
   @override
   Widget build(BuildContext context) {

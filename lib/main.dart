@@ -1,4 +1,4 @@
-import 'package:cross/pages/MainPage.dart';
+import 'package:cross/pages/main_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

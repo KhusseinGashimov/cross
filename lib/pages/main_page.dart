@@ -1,13 +1,13 @@
-import 'package:cross/lists/ActorList.dart';
-import 'package:cross/classes/Comment.dart';
-import 'package:cross/lists/CommentList.dart';
-import 'package:cross/classes/News.dart';
-import 'package:cross/detailPages/NewsDetailPage.dart';
+import 'package:cross/lists/actor_list.dart';
+import 'package:cross/classes/comment.dart';
+import 'package:cross/lists/comment_list.dart';
+import 'package:cross/classes/news.dart';
+import 'package:cross/detailPages/news_detail_page.dart';
 
-import 'package:cross/lists/NewsList.dart';
+import 'package:cross/lists/news_list.dart';
 
-import 'package:cross/lists/StuffListPage.dart';
-import 'package:cross/pages/BookingCalendar.dart';
+import 'package:cross/lists/stuff_list_page.dart';
+import 'package:cross/pages/booking_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
               icon: const Icon(Icons.calendar_month),
               color: Colors.white,
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (contex)=>BookingCalendar()));
+                Navigator.push(context, MaterialPageRoute(builder: (contex)=>const BookingCalendar()));
               }
             )),
           )
@@ -273,7 +273,7 @@ class _MainPageState extends State<MainPage> {
           ElevatedButton(
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewsListPage()));
+                  MaterialPageRoute(builder: (context) => const NewsListPage()));
             },
             child: const Text("View All News"),
           ),
@@ -288,7 +288,7 @@ class _MainPageState extends State<MainPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ActorsListPage()));
+                            builder: (context) => const ActorsListPage()));
                   },
                   child: const Text(
                     'Actor',
@@ -342,7 +342,7 @@ class _MainPageState extends State<MainPage> {
               TextButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CommentList()));
+                        MaterialPageRoute(builder: (context) => const CommentList()));
                   },
                   child: const Text(
                     "View all",

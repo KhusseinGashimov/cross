@@ -1,7 +1,9 @@
-import 'package:cross/classes/Comment.dart';
+import 'package:cross/classes/comment.dart';
 import 'package:flutter/material.dart';
 
 class CommentList extends StatefulWidget {
+  const CommentList({super.key});
+
   @override
   _CommentListState createState() => _CommentListState();
 }

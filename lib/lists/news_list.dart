@@ -1,8 +1,10 @@
-import 'package:cross/classes/News.dart';
-import 'package:cross/detailPages/NewsDetailPage.dart';
+import 'package:cross/classes/news.dart';
+import 'package:cross/detailPages/news_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class NewsListPage extends StatelessWidget {
+  const NewsListPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

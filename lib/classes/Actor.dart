@@ -1,8 +1,8 @@
 class Actor {
   final String name;
   final String description;
-  final String Url;
-  Actor(this.name, this.description, this.Url);
+  final String url;
+  Actor(this.name, this.description, this.url);
 }
 
 List<Actor> actors = [

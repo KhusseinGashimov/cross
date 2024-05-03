@@ -1,6 +1,5 @@
-import 'package:cross/classes/Event.dart';
+import 'package:cross/classes/event.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class BookingCalendar extends StatefulWidget {
@@ -19,7 +18,7 @@ class _BookingCalendarState extends State<BookingCalendar> {
 
   late final ValueNotifier<List<Event>> _selectedEvents;
 
-  TextEditingController _eventController = TextEditingController();
+  final TextEditingController _eventController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -132,7 +131,6 @@ class _BookingCalendarState extends State<BookingCalendar> {
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(12)),
                           child: ListTile(
-                            onTap: () => print(''),
                             title: Text(
                               value[index].title,
                               style: const TextStyle(color: Colors.white),

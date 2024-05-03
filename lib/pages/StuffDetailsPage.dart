@@ -1,10 +1,10 @@
-import 'package:cross/pages/Actor.dart';
+import 'package:cross/pages/Stuff.dart';
 import 'package:flutter/material.dart';
 
-class ActorDetailsPage extends StatelessWidget {
-  final Actor actor;
+class StuffDetailsPage extends StatelessWidget {
+  final Stuff stuff;
 
-  ActorDetailsPage(this.actor);
+  StuffDetailsPage(this.stuff);
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +14,16 @@ class ActorDetailsPage extends StatelessWidget {
             color: Colors.white,
           ),
           title: Text(
-            actor.name,
+            stuff.name,
             style: const TextStyle(color: Colors.white),
           )),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Image.network(actor.Url),
+            Image.network(stuff.url),
             Text(
-              actor.description,
+              stuff.description,
               style: const TextStyle(color: Colors.white),
             ),
           ],

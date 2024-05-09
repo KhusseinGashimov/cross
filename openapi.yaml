@@ -56,3 +56,21 @@ paths:
       responses:
         '200':
           description: Stuff created successfully
+          
+  /auth/signout:
+    post:
+      summary: Sign out the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: The ID of the user to sign out
+      responses:
+        '200':
+          description: User signed out successfully
+

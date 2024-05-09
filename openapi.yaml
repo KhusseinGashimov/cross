@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: Cross API
+  description: API for managing actors and stuffs in the Cross app
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+paths:
+  /actors:
+    post:
+      summary: Create a new actor
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the actor
+                description:
+                  type: string
+                  description: The description of the actor
+                url:
+                  type: string
+                  format: uri
+                  description: The URL of the actor's image
+      responses:
+        '200':
+          description: Actor created successfully
+
+  /stuffs:
+    post:
+      summary: Create a new stuff
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the stuff
+                description:
+                  type: string
+                  description: The description of the stuff
+                url:
+                  type: string
+                  format: uri
+                  description: The URL of the stuff's image
+      responses:
+        '200':
+          description: Stuff created successfully

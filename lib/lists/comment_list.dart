@@ -1,4 +1,5 @@
-import 'package:cross/classes/comment.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 
 class CommentList extends StatefulWidget {
@@ -10,16 +11,33 @@ class CommentList extends StatefulWidget {
 
 class _CommentListState extends State<CommentList> {
   void _addComment(String name, String comment, String url) {
-    setState(() {
-      comments.add(Comment(name, comment, url));
+  setState(() {
+    // Create a new document in the 'comments' collection with the given data
+    FirebaseFirestore.instance.collection('comments').add({
+      'name': name,
+      'comment': comment,
+      'url': url,
+      'timestamp': FieldValue.serverTimestamp(), // Adds a server-side timestamp
     });
-  }
+  });
+}
 
-  void _deleteComment(int index) {
-    setState(() {
-      comments.removeAt(index);
-    });
-  }
+void _updateComment(String id, String newName, String newComment, String url) {
+  FirebaseFirestore.instance.collection('comments').doc(id).update({
+    'name': newName,
+    'comment': newComment,
+    'url': url, // Assuming you want to allow the URL to be changed in the future
+  });
+}
+
+
+
+  void _deleteComment(String id) {
+  setState(() {
+    FirebaseFirestore.instance.collection('comments').doc(id).delete();
+  });
+}
+
 
   void _showAddCommentDialog() {
     final TextEditingController nameController = TextEditingController();
@@ -63,48 +81,93 @@ class _CommentListState extends State<CommentList> {
     );
   }
 
+void _showEditCommentDialog(String id, String currentName, String currentComment, String currentUrl) {
+  TextEditingController nameController = TextEditingController(text: currentName);
+  TextEditingController commentController = TextEditingController(text: currentComment);
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Edit Comment'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  hintText: 'Name',
+                ),
+              ),
+              TextField(
+                controller: commentController,
+                decoration: const InputDecoration(
+                  hintText: 'Comment',
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              _updateComment(id, nameController.text, commentController.text, currentUrl);
+              Navigator.of(context).pop();
+            },
+            child: const Text('Update Comment'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.white,
-        ),
-        title: const Text(
-          'Comment List',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: ListView.builder(
-        itemCount: comments.length,
-        itemBuilder: (context, index) {
-          return Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-            child: ListTile(
-              leading: ClipRRect(
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      leading: const BackButton(color: Colors.white),
+      title: const Text('Comment List', style: TextStyle(color: Colors.white)),
+    ),
+    body: StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('comments').orderBy('timestamp', descending: true).snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return const CircularProgressIndicator();
+        return ListView.builder(
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            var comment = snapshot.data!.docs[index];
+            return Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+              child: ListTile(
+                leading: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: Image.network(comments[index].url)),
-              title: Text(
-                comments[index].name,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+                  child: Image.network(comment['url']),
+                ),
+                title: Text(
+                  comment['name'],
+                  style: const TextStyle(
+                      color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  comment['comment'],
+                  style: const TextStyle(color: Colors.white),
+                ),
+                onLongPress: () => _deleteComment(comment.id), // Update to use Firestore document ID
+                onTap: ()=> _showEditCommentDialog(comment.id, comment['name'], comment['comment'], comment['url']),
               ),
-              subtitle: Text(
-                comments[index].description,
-                style: const TextStyle(color: Colors.white),
-              ),
-              onLongPress: () => _deleteComment(index)
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddCommentDialog,
-        tooltip: 'Add Comment',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+            );
+          },
+        );
+      },
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: _showAddCommentDialog,
+      tooltip: 'Add Comment',
+      child: const Icon(Icons.add),
+    ),
+  );
+}
+
 }

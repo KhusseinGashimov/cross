@@ -1,8 +1,19 @@
+import 'package:cross/firebase_options.dart';
+import 'package:cross/pages/login_page.dart';
 import 'package:cross/pages/main_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+
+    options: DefaultFirebaseOptions.currentPlatform,
+
+);
+  runApp(const ProviderScope(child: MyApp()),);
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +31,22 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(backgroundColor: Colors.purple[900]),
         scaffoldBackgroundColor: Colors.purple[900],
       ),
-      home: const MainPage(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.userChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.data == null) {
+            return const LoginScreen();
+          }
+
+          return const MainPage();
+        },
+      ),
     );
   }
 }

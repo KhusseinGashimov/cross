@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "144794874003",
+    "project_id": "cross-d8dce",
+    "storage_bucket": "cross-d8dce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144794874003:android:381dda5ab7d04131f91d66",
+        "android_client_info": {
+          "package_name": "com.example.cross"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144794874003-6i8fs0qdnaq0skievog3v7n0uadeeh0p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrvJ6w7r9Bk2VJ3DC8Hvc2181uL0zRqbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "144794874003-6i8fs0qdnaq0skievog3v7n0uadeeh0p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "144794874003-sig5it6qarcj2hupp0j68plc0dr51rhe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cross"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

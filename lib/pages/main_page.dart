@@ -1,5 +1,4 @@
 import 'package:cross/lists/actor_list.dart';
-import 'package:cross/classes/comment.dart';
 import 'package:cross/lists/comment_list.dart';
 import 'package:cross/classes/news.dart';
 import 'package:cross/detailPages/news_detail_page.dart';
@@ -8,7 +7,9 @@ import 'package:cross/lists/news_list.dart';
 
 import 'package:cross/lists/stuff_list_page.dart';
 import 'package:cross/pages/booking_calendar.dart';
+import 'package:cross/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MainPage extends StatefulWidget {
@@ -42,13 +43,26 @@ class _MainPageState extends State<MainPage> {
             padding: const EdgeInsets.only(right: 20),
             child: Center(
                 child: IconButton(
-              icon: const Icon(Icons.calendar_month),
-              color: Colors.white,
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (contex)=>const BookingCalendar()));
-              }
-            )),
-          )
+                    icon: const Icon(Icons.calendar_month),
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (contex) => const BookingCalendar()));
+                    })),
+          ),
+          Consumer(builder: (context, ref, child) {
+            return IconButton(
+              onPressed: () {
+                ref.read(authProvider).singout();
+              },
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+            );
+          })
         ],
       ),
       backgroundColor: Colors.purple[900],
@@ -272,8 +286,10 @@ class _MainPageState extends State<MainPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const NewsListPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NewsListPage()));
             },
             child: const Text("View All News"),
           ),
@@ -302,7 +318,7 @@ class _MainPageState extends State<MainPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const StuffListPage()));
+                            builder: (context) => const StuffsListPage()));
                   },
                   child: const Text('Stuff',
                       style: TextStyle(
@@ -326,14 +342,14 @@ class _MainPageState extends State<MainPage> {
               ),
               Container(
                 color: Colors.purple[700],
-                child: ListTile(
-                  title: Text(comments[0].name),
+                child: const ListTile(
+                  title: Text("Olivia"),
                   subtitle: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(comments[0].description),
+                    padding: EdgeInsets.all(8.0),
+                    child: Text("amazing"),
                   ),
-                  subtitleTextStyle: const TextStyle(color: Colors.white),
-                  titleTextStyle: const TextStyle(
+                  subtitleTextStyle: TextStyle(color: Colors.white),
+                  titleTextStyle: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
@@ -341,8 +357,10 @@ class _MainPageState extends State<MainPage> {
               ),
               TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const CommentList()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CommentList()));
                   },
                   child: const Text(
                     "View all",

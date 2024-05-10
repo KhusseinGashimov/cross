@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cross/detailPages/stuff_details_page.dart';
-import 'package:cross/pages/stuff_add_screen.dart';
+import 'package:cross/add/stuff_add_screen.dart';
 import 'package:flutter/material.dart';
 
 class StuffsListPage extends StatelessWidget {
@@ -16,8 +15,10 @@ class StuffsListPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const StuffAddScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const StuffAddScreen()));
             },
             icon: const Icon(
               Icons.add,
@@ -72,7 +73,7 @@ class StuffsListPage extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('Удаление актера'),
+                            title: const Text('Удаление Стафа'),
                             content: const Text(
                                 'Вы уверены, что хотите удалить этого стаффа?'),
                             actions: <Widget>[
@@ -100,18 +101,7 @@ class StuffsListPage extends StatelessWidget {
                       );
                     },
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StuffDetailsPage(
-                            docId: stuff.id,
-                            name: stuff['name'], // Передача имени актера
-                            url: stuff['url'], // Передача URL изображения
-                            description: stuff[
-                                'description'], // Передача описания актера
-                          ),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/stuff/${stuff.id}');
                     },
                   ),
                 );

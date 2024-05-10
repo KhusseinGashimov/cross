@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cross/providers/providers.dart';
 
-class ActorAddScreen extends ConsumerStatefulWidget {
-  const ActorAddScreen({super.key});
+class NewsAddScreen extends ConsumerStatefulWidget {
+  const NewsAddScreen({super.key});
 
   @override
-  ConsumerState<ActorAddScreen> createState() => _ActorAddScreenState();
+  ConsumerState<NewsAddScreen> createState() => _NewsAddScreenState();
 }
 
-class _ActorAddScreenState extends ConsumerState<ActorAddScreen> {
+class _NewsAddScreenState extends ConsumerState<NewsAddScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController url = TextEditingController();
@@ -19,7 +19,7 @@ class _ActorAddScreenState extends ConsumerState<ActorAddScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: BackButton(
+          leading: const BackButton(
             color: Colors.white,
           ),
         ),
@@ -110,7 +110,7 @@ class _ActorAddScreenState extends ConsumerState<ActorAddScreen> {
                 Consumer(builder: (context, ref, child) {
                   return IconButton(
                     onPressed: () {
-                      ref.read(authProvider).sendNewActor(
+                      ref.read(authProvider).sendNewNews(
                             name.text.trim(),
                             description.text.trim(),
                             url.text.trim(),

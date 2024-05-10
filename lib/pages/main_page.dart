@@ -1,12 +1,4 @@
-import 'package:cross/lists/actor_list.dart';
-import 'package:cross/lists/comment_list.dart';
 import 'package:cross/classes/news.dart';
-import 'package:cross/detailPages/news_detail_page.dart';
-
-import 'package:cross/lists/news_list.dart';
-
-import 'package:cross/lists/stuff_list_page.dart';
-import 'package:cross/pages/booking_calendar.dart';
 import 'package:cross/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,10 +38,9 @@ class _MainPageState extends State<MainPage> {
                     icon: const Icon(Icons.calendar_month),
                     color: Colors.white,
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                              builder: (contex) => const BookingCalendar()));
+                          '/calendar');
                     })),
           ),
           Consumer(builder: (context, ref, child) {
@@ -165,15 +156,7 @@ class _MainPageState extends State<MainPage> {
                           image: NetworkImage(newss[0].url),
                           height: 200,
                           fit: BoxFit.cover,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          NewsDetailPage(newss[0])));
-                            },
-                          ),
+                          
                         ),
                         Container(
                           width: 200,
@@ -208,15 +191,7 @@ class _MainPageState extends State<MainPage> {
                           image: NetworkImage(newss[1].url),
                           height: 200,
                           fit: BoxFit.cover,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          NewsDetailPage(newss[1])));
-                            },
-                          ),
+                         
                         ),
                         Container(
                           width: 200,
@@ -251,15 +226,6 @@ class _MainPageState extends State<MainPage> {
                           image: NetworkImage(newss[2].url),
                           height: 200,
                           fit: BoxFit.cover,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          NewsDetailPage(newss[2])));
-                            },
-                          ),
                         ),
                         Container(
                           width: 200,
@@ -286,10 +252,8 @@ class _MainPageState extends State<MainPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const NewsListPage()));
+              Navigator.pushNamed(
+                  context, '/newss');
             },
             child: const Text("View All News"),
           ),
@@ -301,10 +265,8 @@ class _MainPageState extends State<MainPage> {
             children: [
               TextButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ActorsListPage()));
+                    Navigator.pushNamed(
+                        context, '/actors');
                   },
                   child: const Text(
                     'Actor',
@@ -315,10 +277,9 @@ class _MainPageState extends State<MainPage> {
                   )),
               TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const StuffsListPage()));
+                        '/stuffs');
                   },
                   child: const Text('Stuff',
                       style: TextStyle(
@@ -357,10 +318,9 @@ class _MainPageState extends State<MainPage> {
               ),
               TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const CommentList()));
+                        '/comments');
                   },
                   child: const Text(
                     "View all",

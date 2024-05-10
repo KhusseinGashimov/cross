@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cross/detailPages/actors_details_page.dart';
-import 'package:cross/pages/actor_add_screen.dart';
+import 'package:cross/add/actor_add_screen.dart';
 import 'package:flutter/material.dart';
 
 class ActorsListPage extends StatelessWidget {
@@ -100,18 +99,7 @@ class ActorsListPage extends StatelessWidget {
                       );
                     },
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ActorDetailsPage(
-                            docId: actor.id,
-                            name: actor['name'], // Передача имени актера
-                            url: actor['url'], // Передача URL изображения
-                            description: actor[
-                                'description'], // Передача описания актера
-                          ),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/actor/${actor.id}');
                     },
                   ),
                 );

@@ -41,4 +41,8 @@ Future sendNewStuff(String name, String description, String url) async {
   databaseService.addStuff(name, description, url);
 }
 
+Future sendNewNews(String name, String description, String url) async {
+  DatabaseService databaseService = DatabaseService();
+  databaseService.addNews(name, description, url);
+}
 }

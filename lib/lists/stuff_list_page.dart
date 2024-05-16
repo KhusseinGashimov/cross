@@ -1,9 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cross/add/stuff_add_screen.dart';
+import 'dart:convert';
+import 'package:cross/models/stuff.dart';
+import 'package:cross/services/stuff_service.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:cross/add/stuff_add_screen.dart';
 
-class StuffsListPage extends StatelessWidget {
+class StuffsListPage extends StatefulWidget {
   const StuffsListPage({super.key});
+
+  @override
+  State<StuffsListPage> createState() => _StuffsListPageState();
+}
+
+class _StuffsListPageState extends State<StuffsListPage> {
+
+  late Future<List<Stuff>> _stuff;
+  StuffService stuffService = StuffService();
+
+  @override
+  void initState() {
+    super.initState();
+    _stuff = stuffService.getAllMembersOfStuff();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +50,15 @@ class StuffsListPage extends StatelessWidget {
         ),
         backgroundColor: Colors.purple[900],
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('stuffs').snapshots(),
+      body: FutureBuilder<List<dynamic>>(
+        future: _stuff,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            final stuffs = snapshot.data!.docs;
-
+            final stuffs = snapshot.data!;
             return ListView.builder(
               itemCount: stuffs.length,
               itemBuilder: (context, index) {
@@ -58,7 +75,7 @@ class StuffsListPage extends StatelessWidget {
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(30),
                       child: Image.network(
-                        stuff['url'],
+                        stuff['image'],
                         errorBuilder: (context, error, stackTrace) {
                           // Изображение по умолчанию при ошибке загрузки
                           return Image.network(
@@ -86,11 +103,8 @@ class StuffsListPage extends StatelessWidget {
                               ),
                               TextButton(
                                 child: const Text('Удалить'),
-                                onPressed: () {
-                                  FirebaseFirestore.instance
-                                      .collection('stuffs')
-                                      .doc(stuff.id)
-                                      .delete();
+                                onPressed: ()  {
+                                  stuffService.deleteMemberOfStuff(stuff['id']);
                                   Navigator.of(context)
                                       .pop(); // Закрыть диалог после удаления
                                 },
@@ -101,7 +115,7 @@ class StuffsListPage extends StatelessWidget {
                       );
                     },
                     onTap: () {
-                      Navigator.pushNamed(context, '/stuff/${stuff.id}');
+                      Navigator.pushNamed(context, '/stuff/${stuff['id']}');
                     },
                   ),
                 );
@@ -111,5 +125,15 @@ class StuffsListPage extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+
+Future<List<dynamic>> fetchStuffs() async {
+  final response = await http.get(Uri.parse('http://5.76.191.157:3000/stuff/all'));
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to load stuffs');
   }
 }

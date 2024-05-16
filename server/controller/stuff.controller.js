@@ -1,4 +1,4 @@
-const stuffService = require('../services/stuff.service');
+const stuffService = require('../service/stuff.service');
 const Response = require('../utils/response');
 const getStuffOfMember = async (req, res) => {
     try {

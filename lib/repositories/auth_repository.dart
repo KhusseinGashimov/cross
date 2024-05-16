@@ -1,5 +1,6 @@
 
-import 'package:cross/repositories/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,6 +9,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+    final CollectionReference actorsCollection =
+      FirebaseFirestore.instance.collection('actors');
+
+  final CollectionReference stuffsCollection =
+      FirebaseFirestore.instance.collection('stuffs');
+
+  final CollectionReference newssCollection =
+      FirebaseFirestore.instance.collection('newss');
   Future<UserCredential?> signInWithGoogle() async {
     // Trigger the Google sign in flow
     final googleUser = await _googleSignIn.signIn();
@@ -32,17 +41,39 @@ class AuthRepository {
   }
 
   Future sendNewActor(String name, String description, String url) async {
-  DatabaseService databaseService = DatabaseService();
-  databaseService.addActor(name, description, url);
+  try {
+      await actorsCollection.add({
+        'name': name,
+        'description': description,
+        'url': url,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
 }
 
 Future sendNewStuff(String name, String description, String url) async {
-  DatabaseService databaseService = DatabaseService();
-  databaseService.addStuff(name, description, url);
+  try {
+      await stuffsCollection.add({
+        'name': name,
+        'description': description,
+        'url': url,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
 }
 
+
 Future sendNewNews(String name, String description, String url) async {
-  DatabaseService databaseService = DatabaseService();
-  databaseService.addNews(name, description, url);
+  try {
+      await newssCollection.add({
+        'name': name,
+        'description': description,
+        'url': url,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
 }
 }

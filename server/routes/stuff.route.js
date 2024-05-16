@@ -1,4 +1,4 @@
-const stuffController = require('../controllers/stuff.controller');
+const stuffController = require('../controller/stuff.controller');
 
 const express = require('express');
 

@@ -1,10 +1,13 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('../cross-d8dce-firebase-adminsdk-ejw93-97e19748ce.json');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
-const db = admin.firestore();
-const auth = admin.auth();
-const bucket = admin.storage().bucket('gs://cross-d8dce.appspot.com');
+const mongoose=require('mongoose');
 
-module.exports = { db, auth,bucket};
+async function connectDB() {
+    try {
+      await mongoose.connect(
+        "mongodb+srv://iliaskenes2005:AYISbdc84l1vGNSH@cluster0.c1tenti.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+      );
+      console.log("Connected to MongoDBB");
+    } catch (error) {
+      console.error("Error connecting to MongoDB:", error);
+    }
+  }
+  module.exports = connectDB;

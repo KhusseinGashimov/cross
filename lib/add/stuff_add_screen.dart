@@ -1,133 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cross/providers/providers.dart';
+import 'package:http/http.dart' as http;
+ // Update with your actual package name
 
-class StuffAddScreen extends ConsumerStatefulWidget {
-  const StuffAddScreen({super.key});
+class AddStaffPage extends StatelessWidget {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
+  final TextEditingController _positionController = TextEditingController();
 
-  @override
-  ConsumerState<StuffAddScreen> createState() => _StuffAddScreenState();
-}
-
-class _StuffAddScreenState extends ConsumerState<StuffAddScreen> {
-  TextEditingController name = TextEditingController();
-  TextEditingController description = TextEditingController();
-  TextEditingController url = TextEditingController();
+  Future<void> addStaff(BuildContext context) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://172.20.10.3:3000/staff'),
+        body: {
+          'name': _nameController.text ?? '',
+          'surname': _surnameController.text ?? '',
+          'position': _positionController.text ?? '',
+        },
+      );
+      if (response.statusCode == 201) {
+        Navigator.pop(context);
+      } else {
+        throw Exception('Failed to add staff member');
+      }
+    } catch (e) {
+      print('Error: $e');
+      // Handle error
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: const BackButton(
-            color: Colors.white,
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 12,
-          ),
-          child: Expanded(
-            child: ListView(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                //name
-                TextField(
-                  controller: name,
-
-                  decoration: InputDecoration(
-                    labelText: 'name',
-                    prefixIcon: const Icon(Icons.perm_identity_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(
-                        color: Colors.blue, // Border color
-                        width: 2.0, // Border width
-                      ),
-                    ),
-
-                    filled: true,
-                    fillColor: Colors.grey[200], // Fill color
-                  ),
-                  style: const TextStyle(color: Colors.black), // Text color
-                ),
-
-                const SizedBox(
-                  height: 30,
-                ),
-
-                //description
-                TextField(
-                  controller: description,
-                  decoration: InputDecoration(
-                    labelText: 'description',
-                    prefixIcon: const Icon(Icons.description),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(
-                        color: Colors.blue, // Border color
-                        width: 2.0, // Border width
-                      ),
-                    ),
-
-                    filled: true,
-                    fillColor: Colors.grey[200], // Fill color
-                  ),
-                  style: const TextStyle(color: Colors.black), // Text color
-                ),
-
-                const SizedBox(
-                  height: 30,
-                ),
-
-                //ticket_price
-                TextField(
-                  controller: url,
-                  decoration: InputDecoration(
-                    labelText: 'Image url',
-                    prefixIcon: const Icon(Icons.price_check),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: const BorderSide(
-                        color: Colors.blue, // Border color
-                        width: 2.0, // Border width
-                      ),
-                    ),
-
-                    filled: true,
-                    fillColor: Colors.grey[200], // Fill color
-                  ),
-                  style: const TextStyle(color: Colors.black), // Text color
-                ),
-
-                const SizedBox(
-                  height: 30,
-                ),
-
-                Consumer(builder: (context, ref, child) {
-                  return IconButton(
-                    onPressed: () {
-                      ref.read(authProvider).sendNewStuff(
-                            name.text.trim(),
-                            description.text.trim(),
-                            url.text.trim(),
-                          );
-
-                      name.clear();
-                      description.clear();
-                      url.clear();
-                    },
-                    icon: const Icon(
-                      Icons.send,
-                    ),
-                  );
-                })
-              ],
+      appBar: AppBar(
+        title: Text('Add Staff Member'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(labelText: 'Name'),
             ),
-          ),
-        ));
+            TextField(
+              controller: _surnameController,
+              decoration: InputDecoration(labelText: 'Surname'),
+            ),
+            TextField(
+              controller: _positionController,
+              decoration: InputDecoration(labelText: 'Position'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                addStaff(context);
+              },
+              child: Text('Add Staff Member'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,86 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
-class StuffEditScreen extends StatefulWidget {
-  final String
-      documentId; // Assuming each actor has a unique Firestore document ID
-
-  const StuffEditScreen({super.key, required this.documentId});
-
-  @override
-  _StuffEditScreenState createState() => _StuffEditScreenState();
-}
-
-class _StuffEditScreenState extends State<StuffEditScreen> {
+class UpdateStaffPage extends StatelessWidget {
+  final String staffId;
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _urlController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
+  final TextEditingController _positionController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
+  UpdateStaffPage({required this.staffId});
 
-  void _loadData() async {
-    var document =
-        FirebaseFirestore.instance.collection('stuffs').doc(widget.documentId);
-    var snapshot = await document.get();
-    if (snapshot.exists) {
-      _nameController.text = snapshot.data()?['name'] ?? '';
-      _urlController.text = snapshot.data()?['url'] ?? '';
-      _descriptionController.text = snapshot.data()?['description'] ?? '';
+  Future<void> updateStaff(BuildContext context) async {
+    final response = await http.put(
+      Uri.parse('http://172.20.10.3:3000/staff/$staffId'),
+      body: {
+        'name': _nameController.text ?? '',
+        'surname': _surnameController.text ?? '',
+        'position': _positionController.text ?? '',
+      },
+    );
+    if (response.statusCode == 200) {
+      Navigator.pop(context);
+    } else {
+      // Handle error
     }
-  }
-
-  void _updateData() {
-    FirebaseFirestore.instance
-        .collection('stuffs')
-        .doc(widget.documentId)
-        .update({
-      'name': _nameController.text,
-      'url': _urlController.text,
-      'description': _descriptionController.text,
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(color: Colors.white),
-        title: Text(_nameController.text,
-            style: const TextStyle(color: Colors.white)),
+        title: Text('Update Staff Member'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
+        child: Column(
           children: [
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                  labelText: 'Name',
-                  labelStyle: TextStyle(color: Colors.amber)),
-              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(labelText: 'Name'),
             ),
             TextField(
-              controller: _urlController,
-              decoration: const InputDecoration(
-                  labelText: 'Image URL',
-                  labelStyle: TextStyle(color: Colors.amber)),
-              style: const TextStyle(color: Colors.white),
+              controller: _surnameController,
+              decoration: InputDecoration(labelText: 'Surname'),
             ),
             TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                  labelText: 'Description',
-                  labelStyle: TextStyle(color: Colors.amber)),
-              style: const TextStyle(color: Colors.white),
+              controller: _positionController,
+              decoration: InputDecoration(labelText: 'Position'),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _updateData,
-              child: const Text('Update Details'),
+              onPressed: () {
+                updateStaff(context);
+              },
+              child: Text('Update Staff Member'),
             ),
           ],
         ),

@@ -36,12 +36,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       onGenerateRoute: (settings) {
         // Handle the dynamic route for stuff details
-        if (settings.name!.startsWith('/stuff/')) {
-          final stuffId = settings.name!.substring(7); // Extracts the ID from the route
-          return MaterialPageRoute(
-            builder: (context) => StuffDetailsPage(docId: stuffId),
-          );
-        }
+        // if (settings.name!.startsWith('/stuff/')) {
+        //   final stuffId = settings.name!.substring(7); // Extracts the ID from the route
+        //   return MaterialPageRoute(
+        //     builder: (context) => StuffDetailsPage(docId: stuffId),
+        //   );
+        // }
         if (settings.name!.startsWith('/actor/')) {
           final actorId = settings.name!.substring(7); // Extracts the ID from the route
           return MaterialPageRoute(
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         // Fallback for defined static routes
         var routes = <String, WidgetBuilder>{
           '/': (context) => const MainPage(),
-          '/stuffs': (context) => const StuffsListPage(),
+          '/stuffs': (context) => StaffListPage(),
           '/actors': (context) => const ActorsListPage(),
           '/comments': (context) => const CommentList(),
           '/newss': (context) => const NewssListPage(),
